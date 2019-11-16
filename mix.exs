@@ -32,6 +32,7 @@ defmodule ElixirOutsideinTdd.MixProject do
   defp deps() do
     [
       {:plug_cowboy, "~> 2.1"},
+      {:httpoison, "~> 1.6", only: :test},
       {:mock, "~> 0.3.3", only: :test},
       {:mox, "~> 0.5.1", only: :test}
     ]
