@@ -8,6 +8,7 @@ defmodule ElixirOutsideinTdd.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -22,7 +23,13 @@ defmodule ElixirOutsideinTdd.MixProject do
   def elixirc_paths(:test), do: ["lib", "test/support"]
   def elixirc_paths(_), do: ["lib"]
 
-  defp deps do
+  defp aliases() do
+    [
+      test: ["test --no-start"]
+    ]
+  end
+
+  defp deps() do
     [
       {:plug_cowboy, "~> 2.1"},
       {:mock, "~> 0.3.3", only: :test},
