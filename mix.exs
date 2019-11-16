@@ -24,8 +24,9 @@ defmodule ElixirOutsideinTdd.MixProject do
 
   defp deps do
     [
-      {:mock, "~> 0.3.3"},
-      {:mox, "~> 0.5.1"}
+      {:plug_cowboy, "~> 2.1"},
+      {:mock, "~> 0.3.3", only: :test},
+      {:mox, "~> 0.5.1", only: :test}
     ]
   end
 end
