@@ -9,4 +9,12 @@ defmodule GreetingService do
     messages_service.pick_one!()
     |> String.replace("{User}", user)
   end
+
+  def greet(user, messages_service, hour_of_the_day_service) do
+    hour_of_the_day = hour_of_the_day_service.hour()
+
+    hour_of_the_day
+    |> messages_service.pick_one_at!()
+    |> String.replace("{User}", user)
+  end
 end
