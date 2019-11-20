@@ -8,9 +8,9 @@ defmodule GreetingServiceFeaturesTest do
   end
 
   setup_all do
-    ElixirOutsideinTdd.Application.start(nil, [
+    ElixirOutsideinTdd.Application.start(nil,
       hour_of_the_day_service: FakeHourOfTheDayService
-    ])
+    )
 
     :ok
   end
@@ -45,7 +45,7 @@ defmodule GreetingServiceFeaturesTest do
                "Good morning, Joe! The sun is high and shining!",
                "Hey Joe, nice to see you here!",
                "Joe welcome back!",
-               "Have a splendid day Joe.",
+               "Have a splendid day Joe."
              ]
              |> Enum.member?(response.body)
     end

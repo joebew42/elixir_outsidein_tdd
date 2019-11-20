@@ -12,10 +12,14 @@ defmodule ElixirOutsideinTdd.Application do
   end
 
   def start(type, hour_of_the_day_service: hour_of_the_day_service) do
-    start(type, Keyword.merge(@opts, [hour_of_the_day_service: hour_of_the_day_service]))
+    start(type, Keyword.merge(@opts, hour_of_the_day_service: hour_of_the_day_service))
   end
 
-  def start(_type, greeting_service: greeting_service, messages_service: messages_service, hour_of_the_day_service: hour_of_the_day_service) do
+  def start(_type,
+        greeting_service: greeting_service,
+        messages_service: messages_service,
+        hour_of_the_day_service: hour_of_the_day_service
+      ) do
     children = [
       Plug.Cowboy.child_spec(
         scheme: :http,
