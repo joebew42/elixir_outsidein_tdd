@@ -9,6 +9,10 @@ defmodule GreetingServiceFeaturesTest do
     def hour(), do: 7
   end
 
+  defmodule HourOfTheDayServiceThatReturns13 do
+    def hour(), do: 13
+  end
+
   describe "when a request is made without a user" do
     setup do
       start_server_with(AnyHourOfTheDayService)
@@ -43,17 +47,23 @@ defmodule GreetingServiceFeaturesTest do
     end
   end
 
-  # describe "when a request is made from the user Joe during a time interval from 12 PM to 8 PM" do
-  #   test "the greeting service replies with a greeting message choosen from a predefined list" do
-  #     response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
+  describe "when a request is made from the user Joe during a time interval from 12 PM to 8 PM" do
+    setup do
+      start_server_with(HourOfTheDayServiceThatReturns13)
+      on_exit(fn -> stop_server() end)
+      :ok
+    end
 
-  #     assert [
-  #             "Hello {User}!",
-  #             "You are great {User}"
-  #            ]
-  #            |> Enum.member?(response.body)
-  #   end
-  # end
+    test "the greeting service replies with a greeting message choosen from a predefined list" do
+      response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
+
+      assert [
+              "Hello {User}!",
+              "You are great {User}"
+             ]
+             |> Enum.member?(response.body)
+    end
+  end
 
   defp stop_server do
     Application.stop(:elixir_outsidein_tdd)
