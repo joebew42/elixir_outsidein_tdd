@@ -3,11 +3,11 @@ defmodule GreetingServiceRouterTest do
   use Plug.Test
 
   defmodule FakeGreetingService do
-    def greet(nil, _messages_service) do
+    def greet(nil, nil, _) do
       "Any message"
     end
 
-    def greet("AnyUser", _messages_service) do
+    def greet("AnyUser", nil, _) do
       "Any message"
     end
   end

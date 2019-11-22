@@ -23,20 +23,6 @@ defmodule GreetingServiceFeaturesTest do
     end
   end
 
-  describe "when a request is made from the user Joe" do
-    test "the greeting service replies with a greeting message randomly choosen" do
-      response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
-
-      assert [
-               "Hello Joe!",
-               "Hey Joe, nice to see you here!",
-               "Joe welcome back!",
-               "Have a splendid day Joe."
-             ]
-             |> Enum.member?(response.body)
-    end
-  end
-
   describe "when a request is made from the user Joe during a time interval from 7 AM to 11 AM" do
     test "the greeting service replies with a greeting message choosen from a predefined list" do
       response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")

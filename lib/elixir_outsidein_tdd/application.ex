@@ -27,7 +27,8 @@ defmodule ElixirOutsideinTdd.Application do
           GreetingServiceRouter,
           [
             greeting_service: greeting_service,
-            messages_service: messages_service
+            messages_service: messages_service,
+            hour_of_the_day_service: hour_of_the_day_service
           ]
         },
         options: [port: 4000]

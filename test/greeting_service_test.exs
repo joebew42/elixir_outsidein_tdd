@@ -2,31 +2,13 @@ defmodule GreetingServiceTest do
   use ExUnit.Case, async: true
 
   defmodule FakeMessagesService do
-    def pick_one!() do
-      "Hey {User}, nice to see you here!"
-    end
+    def pick_one!(), do: "Hey {User}, nice to see you here!"
 
-    def pick_one_at!(hour) do
-      "Morning message of the #{hour} AM for {User}."
-    end
+    def pick_one_at!(7), do: "Message of the 7 for {User}."
   end
 
-  def hour_of_the_day_that_returns(hour) do
-    Code.eval_quoted(
-      quote do
-        defmodule HourOfTheDay do
-          def hour(), do: unquote(hour)
-        end
-      end
-    )
-
-    HourOfTheDay
-  end
-
-  test "returns a customized greeting message with the name of the user" do
-    response = GreetingService.greet("Joe", FakeMessagesService)
-
-    assert response == "Hey Joe, nice to see you here!"
+  defmodule FakeHourOfTheDay do
+    def hour(), do: 7
   end
 
   test "returns a 'Hello my friend!' when user is not provided" do
@@ -35,28 +17,9 @@ defmodule GreetingServiceTest do
     assert response == "Hello my friend!"
   end
 
-  describe "when the hour of the day is the 7 AM" do
-    test "returns a customized message from the morning" do
-      response = GreetingService.greet("Joe", FakeMessagesService, hour_of_the_day_that_returns(7))
+  test "A customized messages is returned based on the hour of the day" do
+    response = GreetingService.greet("Joe", FakeMessagesService, FakeHourOfTheDay)
 
-      assert response == "Morning message of the 7 AM for Joe."
-    end
-  end
-
-  describe "when the hour of the day is the 8 AM" do
-    test "returns a customized message from the morning" do
-      response = GreetingService.greet("Joe", FakeMessagesService, hour_of_the_day_that_returns(8))
-
-      assert response == "Morning message of the 8 AM for Joe."
-    end
-  end
-
-  describe "when the hour of the day is the 9 AM" do
-    test "returns a customized message from the morning" do
-      response =
-        GreetingService.greet("Joe", FakeMessagesService, hour_of_the_day_that_returns(9))
-
-      assert response == "Morning message of the 9 AM for Joe."
-    end
+    assert response == "Message of the 7 for Joe."
   end
 end
