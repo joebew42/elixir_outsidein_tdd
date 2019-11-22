@@ -1,21 +1,21 @@
 defmodule GreetingServiceFeaturesTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
-  defmodule HourOfTheDayServiceThatReturns7 do
-    def hour() do
-      7
-    end
+  defmodule AnyHourOfTheDayService do
+    def hour(), do: 0
   end
 
-  setup_all do
-    ElixirOutsideinTdd.Application.start(nil,
-      hour_of_the_day_service: HourOfTheDayServiceThatReturns7
-    )
-
-    :ok
+  defmodule HourOfTheDayServiceThatReturns7 do
+    def hour(), do: 7
   end
 
   describe "when a request is made without a user" do
+    setup do
+      start_server_with(AnyHourOfTheDayService)
+      on_exit(fn -> stop_server() end)
+      :ok
+    end
+
     test "the greeting service replies with 'Hello my friend!'" do
       response = HTTPoison.get!("http://localhost:4000/greet")
 
@@ -24,6 +24,12 @@ defmodule GreetingServiceFeaturesTest do
   end
 
   describe "when Joe request a message from 7 AM to 11 AM" do
+    setup do
+      start_server_with(HourOfTheDayServiceThatReturns7)
+      on_exit(fn -> stop_server() end)
+      :ok
+    end
+
     test "the greeting service replies with message choosen from a predefined list" do
       response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
 
@@ -48,4 +54,13 @@ defmodule GreetingServiceFeaturesTest do
   #            |> Enum.member?(response.body)
   #   end
   # end
+
+  defp stop_server do
+    Application.stop(:elixir_outsidein_tdd)
+    Process.sleep(100)
+  end
+
+  defp start_server_with(hour_of_the_day_service) do
+    {:ok, _} = ElixirOutsideinTdd.Application.start(nil, hour_of_the_day_service: hour_of_the_day_service)
+  end
 end
