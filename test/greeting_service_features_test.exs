@@ -47,14 +47,14 @@ defmodule GreetingServiceFeaturesTest do
     end
   end
 
-  describe "when a request is made from the user Joe during a time interval from 12 PM to 8 PM" do
+  describe "when Joe request a message from from 12 PM to 8 PM" do
     setup do
       start_server_with(HourOfTheDayServiceThatReturns13)
       on_exit(fn -> stop_server() end)
       :ok
     end
 
-    test "the greeting service replies with a greeting message choosen from a predefined list" do
+    test "the greeting service replies with message choosen from a predefined list" do
       response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
 
       assert [
