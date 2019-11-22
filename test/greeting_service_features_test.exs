@@ -1,7 +1,7 @@
 defmodule GreetingServiceFeaturesTest do
   use ExUnit.Case, async: true
 
-  defmodule FakeHourOfTheDayService do
+  defmodule HourOfTheDayServiceThatReturns7 do
     def hour() do
       7
     end
@@ -9,7 +9,7 @@ defmodule GreetingServiceFeaturesTest do
 
   setup_all do
     ElixirOutsideinTdd.Application.start(nil,
-      hour_of_the_day_service: FakeHourOfTheDayService
+      hour_of_the_day_service: HourOfTheDayServiceThatReturns7
     )
 
     :ok
@@ -23,8 +23,8 @@ defmodule GreetingServiceFeaturesTest do
     end
   end
 
-  describe "when a request is made from the user Joe during a time interval from 7 AM to 11 AM" do
-    test "the greeting service replies with a greeting message choosen from a predefined list" do
+  describe "when Joe request a message from 7 AM to 11 AM" do
+    test "the greeting service replies with message choosen from a predefined list" do
       response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
 
       assert [
@@ -36,4 +36,16 @@ defmodule GreetingServiceFeaturesTest do
              |> Enum.member?(response.body)
     end
   end
+
+  # describe "when a request is made from the user Joe during a time interval from 12 PM to 8 PM" do
+  #   test "the greeting service replies with a greeting message choosen from a predefined list" do
+  #     response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
+
+  #     assert [
+  #             "Hello {User}!",
+  #             "You are great {User}"
+  #            ]
+  #            |> Enum.member?(response.body)
+  #   end
+  # end
 end
