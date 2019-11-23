@@ -14,4 +14,16 @@ defmodule RandomMessagesServiceTest do
       end)
     end
   end
+
+  describe "when the hour is in the intervall between 12 and 20" do
+    test "return a random message choosen from a predefined list" do
+      Enum.each(12..20, fn hour ->
+        assert [
+          "Hello {User}!",
+          "You are great {User}"
+        ]
+        |> Enum.member?(RandomMessagesService.pick_one_at!(hour))
+      end)
+    end
+  end
 end

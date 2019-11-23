@@ -58,8 +58,8 @@ defmodule GreetingServiceFeaturesTest do
       response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
 
       assert [
-              "Hello {User}!",
-              "You are great {User}"
+              "Hello Joe!",
+              "You are great Joe"
              ]
              |> Enum.member?(response.body)
     end

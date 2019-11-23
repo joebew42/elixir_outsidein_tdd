@@ -6,7 +6,16 @@ defmodule RandomMessagesService do
     "Have a splendid day {User}."
   ]
 
+  @afternoon_messages [
+    "Hello {User}!",
+    "You are great {User}"
+  ]
+
   def pick_one_at!(hour) when hour >= 7 and hour <= 11 do
     Enum.random(@morning_messages)
+  end
+
+  def pick_one_at!(hour) when hour >= 12 and hour <= 20 do
+    Enum.random(@afternoon_messages)
   end
 end
