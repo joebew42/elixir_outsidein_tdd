@@ -13,6 +13,10 @@ defmodule GreetingServiceFeaturesTest do
     def hour(), do: 13
   end
 
+  defmodule HourOfTheDayServiceThatReturns22 do
+    def hour(), do: 22
+  end
+
   describe "when a request is made without a user" do
     setup do
       start_server_with(AnyHourOfTheDayService)
@@ -60,6 +64,25 @@ defmodule GreetingServiceFeaturesTest do
       assert [
               "Hello Joe!",
               "You are great Joe"
+             ]
+             |> Enum.member?(response.body)
+    end
+  end
+
+  describe "when Joe request a message from from 9 PM to 6 AM" do
+    setup do
+      start_server_with(HourOfTheDayServiceThatReturns22)
+      on_exit(fn -> stop_server() end)
+      :ok
+    end
+
+    test "the greeting service replies with message choosen from a predefined list" do
+      response = HTTPoison.get!("http://localhost:4000/greet?user=Joe")
+
+      assert [
+              "Have a good night, Joe",
+              "Wish you sweet dreams Joe ...",
+              "It was a great day! Joe it's time to relax!"
              ]
              |> Enum.member?(response.body)
     end
