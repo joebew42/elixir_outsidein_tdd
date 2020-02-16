@@ -5,6 +5,6 @@ defmodule GreetingWeb do
   plug :dispatch
 
   get "/greet" do
-    send_resp(conn, 200, "Hello my friend!")
+    send_resp(conn, 200, Greeting.greet())
   end
 end
