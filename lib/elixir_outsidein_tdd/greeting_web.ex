@@ -7,8 +7,4 @@ defmodule GreetingWeb do
   get "/greet" do
     send_resp(conn, 200, "Hello my friend!")
   end
-
-  match _ do
-    send_resp(conn, 404, "the endpoint not exist")
-  end
 end
